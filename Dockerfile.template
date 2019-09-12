@@ -2,6 +2,10 @@
 # see more about dockerfile templates here: https://www.balena.io/docs/learn/develop/dockerfile/
 FROM balenalib/%%BALENA_MACHINE_NAME%%-python:3-stretch-run
 
+# use `install_packages` if you need to install dependencies,
+# for instance if you need git, just uncomment the line below.
+RUN install_packages wget wiringpi python3-pip python3-pil python3-numpy RPi.GPIO spidev
+
 RUN wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.60.tar.gz &&\
     tar zxvf bcm2835-1.60.tar.gz &&\
     cd bcm2835-1.60/ &&\
@@ -9,10 +13,6 @@ RUN wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.60.tar.gz &&\
     make &&\
     make check &&\
     make install
-
-# use `install_packages` if you need to install dependencies,
-# for instance if you need git, just uncomment the line below.
-RUN install_packages wiringpi python3-pip python3-pil python3-numpy RPi.GPIO spidev
 
 # Set our working directory
 WORKDIR /usr/src/app
